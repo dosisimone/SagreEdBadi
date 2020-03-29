@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 public class Articolo {
 
-	public String nome;
-	public BigDecimal prezzo;
+	private String nome;
+	private BigDecimal prezzo;
 	
 	public Articolo() {
 		nome = "articolo non valido";
@@ -15,6 +15,7 @@ public class Articolo {
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
@@ -22,6 +23,7 @@ public class Articolo {
 	public BigDecimal getPrezzo() {
 		return prezzo;
 	}
+	
 	public void setPrezzo(BigDecimal prezzo) {
 		this.prezzo = prezzo;
 	}	

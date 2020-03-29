@@ -17,6 +17,7 @@ public class Ordine {
 	public String getNome() {
 		return nome;
 	}
+	
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
@@ -34,6 +35,7 @@ public class Ordine {
         }
         qtaArticoli.put(articolo, newQta);
     }
+    
     public void removeArticolo(Articolo articolo, int qta) {
         if (qta <= 0) {
             return;
@@ -56,6 +58,7 @@ public class Ordine {
             qtaArticoli.remove(articolo);            
         }
     }
+    
     public void clearArticoliOrdine() {
         qtaArticoli.clear();
     }	
