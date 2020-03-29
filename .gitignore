@@ -47,19 +47,19 @@ out/
 ##############################
 ## Eclipse
 ##############################
-.settings/
-bin/
-tmp/
-.metadata
-.classpath
+#.settings/
+#bin/
+#tmp/
+#.metadata
+#.classpath
 #.project
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.loadpath
-.factorypath
+#*.tmp
+#*.bak
+#*.swp
+#*~.nib
+#local.properties
+#.loadpath
+#.factorypath
 
 ##############################
 ## NetBeans
