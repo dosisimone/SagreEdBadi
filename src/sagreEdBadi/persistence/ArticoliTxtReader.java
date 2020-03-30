@@ -10,21 +10,23 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import sagreEdBadi.beans.Articolo;
+import sagreEdBadi.factories.IArticoliFactory;
 
 public class ArticoliTxtReader implements IArticoliReader {
 
 	private String path;
+	private IArticoliFactory factory;
 	
-	public ArticoliTxtReader(String path) {
+	public ArticoliTxtReader(IArticoliFactory factory, String path) {		
 		File file = new File(path);
 		if (file.exists() && !file.isDirectory()) {
-			this.path = path;
+			this.factory = factory;
+			this.path = path;			
 		}
 	}
 	
 	@Override
-	public Articolo[] read() {
-		
+	public Articolo[] read() {		
 		List<Articolo> listArticoli = new ArrayList<Articolo>();
 		
 		try 
@@ -38,14 +40,12 @@ public class ArticoliTxtReader implements IArticoliReader {
 	        while((line = bufferedReader.readLine()) != null) 
 	        {
 	        	StringTokenizer strTokenizer = new StringTokenizer(line, delimiters);
-	        	Articolo articolo = new Articolo();	 
 	        	
 	        	if (!strTokenizer.hasMoreTokens()) {
 	        		break;
 	        	}       	     
 	        	String firstToken = strTokenizer.nextToken();
 	        	firstToken = firstToken.trim();
-	        	articolo.setNome(firstToken);
 	        	
 	        	if (!strTokenizer.hasMoreTokens()) {
 	        		break;
@@ -53,8 +53,8 @@ public class ArticoliTxtReader implements IArticoliReader {
 	        	String secondToken = strTokenizer.nextToken();
 	        	secondToken = secondToken.trim();
 	        	BigDecimal prezzo = new BigDecimal(secondToken);
-	        	articolo.setPrezzo(prezzo);
 	        	
+	        	Articolo articolo = factory.creaArticolo(firstToken, prezzo);	 
 	        	listArticoli.add(articolo);
 	        }
 	        

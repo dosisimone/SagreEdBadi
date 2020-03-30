@@ -16,22 +16,18 @@ public class OrdiniController implements IOrdiniController {
 	}
 
 	@Override
-	public void inserisciOrdine(Ordine ordine) {
-		
+	public void inserisciOrdine(Ordine ordine) {		
 		if (ordine == null) {
 			return;
-		}
-		
+		}		
 		ordini.add(ordine);
 	}
 	
 	@Override
-	public void rimuoviOrdine(Ordine ordine) {
-		
+	public void rimuoviOrdine(Ordine ordine) {		
 		if (ordine == null) {
 			return;
-		}
-		
+		}		
 		ordini.remove(ordine);
 	}
 
@@ -42,8 +38,7 @@ public class OrdiniController implements IOrdiniController {
 	}
 
 	@Override
-	public Ordine[] getOrdiniFiltrati(IFiltro<Ordine>[] filtri) {
-		
+	public Ordine[] getOrdini(IFiltro<Ordine>[] filtri) {
 		if (filtri == null || filtri.length == 0) {
 			return getOrdini();
 		}
@@ -61,9 +56,7 @@ public class OrdiniController implements IOrdiniController {
 		}
 		
 		Ordine[] ordiniFiltrati = new Ordine[listaOrdiniFiltrati.size()];
-		return ordini.toArray(ordiniFiltrati);
+		return listaOrdiniFiltrati.toArray(ordiniFiltrati);
 	}
-	
-	
 
 }

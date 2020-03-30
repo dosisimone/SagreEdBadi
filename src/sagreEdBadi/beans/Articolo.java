@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class Articolo {
 
-	public long codice;
+	private long codice;
 	private String nome;
 	private BigDecimal prezzo;
 	

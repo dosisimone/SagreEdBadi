@@ -108,9 +108,7 @@ public class Ordine {
     		totale = totale.add(prezzoUnitarioBD.multiply(qtaBD));    		
     	}
     	return totale;
-    }
-    
-    
+    }   
 	
     @Override
 	public String toString() {
@@ -125,8 +123,7 @@ public class Ordine {
 		result = prime * result + (int) (numero ^ (numero >>> 32));
 		result = prime * result + ((time == null) ? 0 : time.hashCode());
 		return result;
-	}
-    
+	}    
 
 	@Override
 	public boolean equals(Object obj) {

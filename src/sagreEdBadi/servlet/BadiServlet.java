@@ -3,7 +3,6 @@ package sagreEdBadi.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import sagreEdBadi.beans.*;
+import sagreEdBadi.controllers.ArticoliController;
+import sagreEdBadi.controllers.IArticoliController;
 import sagreEdBadi.controllers.IOrdiniController;
 import sagreEdBadi.controllers.OrdiniController;
 import sagreEdBadi.factories.ArticoliFactory;
@@ -23,57 +24,27 @@ import sagreEdBadi.persistence.*;
 public class BadiServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	
-	private Articolo[] articoli;	
+		
 	private IOrdiniController controllerOrdini;
+	private IArticoliController controllerArticoli;
 
 	public void init(ServletConfig config) {
         System.out.println("Servlet is being initialized");
-        
-        IArticoliReader articoliReader = new ArticoliTxtReader("D:\\Documenti\\Progetti\\SagreEdBadi\\articoli.txt");
-        articoli = articoliReader.read();
      
-        controllerOrdini = new OrdiniController();    
-        
-        Tavolo tavolo1 = new Tavolo();
-        tavolo1.setNumero(1);
-        tavolo1.setNumeroCoperti(4);
-        Tavolo tavolo2 = new Tavolo();
-        tavolo2.setNumero(2);
-        tavolo2.setNumeroCoperti(6);
-        
-        IArticoliFactory articoliFactory = new ArticoliFactory();
-        
-        Articolo articolo1 = articoliFactory.creaArticolo("Tagliatelle al ragu`", new BigDecimal("11.00"));
-        Articolo articolo2 = articoliFactory.creaArticolo("Tortelloni burro e salvia", new BigDecimal("8.00"));
-        Articolo articolo3 = articoliFactory.creaArticolo("Crescenta vuota", new BigDecimal("3.50"));
-        Articolo articolo4 = articoliFactory.creaArticolo("Birra peroni", new BigDecimal("3.00"));       
-        
         IOrdiniFactory ordiniFactory = new OrdiniFactory();
-        Ordine ordine1 = ordiniFactory.creaOrdine("Dosi", tavolo1); 
-        ordine1.addArticolo(articolo1, 2);
-        ordine1.addArticolo(articolo4, 1);        
+        controllerOrdini = new OrdiniController();    
+        IArticoliFactory articoliFactory = new ArticoliFactory();
+        controllerArticoli = new ArticoliController();
         
-        Ordine ordine2 = ordiniFactory.creaOrdine("Mattei", tavolo1);  
-        ordine2.addArticolo(articolo2, 1);
-        ordine2.addArticolo(articolo3, 1);
-        
-        Ordine ordine3 = ordiniFactory.creaOrdine("Lunghi", tavolo2);  
-        ordine3.addArticolo(articolo4, 3);
-        
-        Ordine ordine4 = ordiniFactory.creaOrdine("Brunelli", tavolo2);  
-        ordine4.addArticolo(articolo1, 1);
-        
-        controllerOrdini.inserisciOrdine(ordine1);
-        controllerOrdini.inserisciOrdine(ordine2);
-        controllerOrdini.inserisciOrdine(ordine3);
-        controllerOrdini.inserisciOrdine(ordine4);
+        IArticoliReader articoliReader = new ArticoliTxtReader(articoliFactory, "D:\\Documenti\\Progetti\\SagreEdBadi\\articoli.txt");
+        for (Articolo articolo : articoliReader.read()) 
+        {
+        	controllerArticoli.aggiungiArticolo(articolo);
+        }      
     }
  
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-    	
-    	HttpSession httpSession = request.getSession();    	
     	
     	String actionParameter = request.getParameter("op");
     	if (actionParameter == null) {
@@ -82,6 +53,11 @@ public class BadiServlet extends HttpServlet {
     	
     	switch (actionParameter) 
     	{
+	    	case "lista_articoli": 
+	    	{
+	    		serviceListArticoli(request, response);
+	    	}
+	    	break;
 	    	case "lista_ordini":
 	    	{
 	    		serviceListOrders(request, response);
@@ -111,6 +87,25 @@ public class BadiServlet extends HttpServlet {
         System.out.println("Servlet is being destroyed");
     }
 
+	private void serviceListArticoli(HttpServletRequest request, HttpServletResponse response) {
+		
+		try {
+			PrintWriter writer = response.getWriter();
+			for (Articolo articolo : controllerArticoli.getArticoli()) 
+			{
+				writer.print(articolo.getCodice() + "; ");
+				writer.print(articolo.getNome() + "; ");
+				writer.print(articolo.getPrezzo() + ";");
+				writer.println();
+			}
+	        writer.flush();
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private void serviceListOrders(HttpServletRequest request, HttpServletResponse response) {
 		
 		try {
@@ -137,14 +132,14 @@ public class BadiServlet extends HttpServlet {
 	
 	private void serviceNewOrder(HttpServletRequest request, HttpServletResponse response) {
 		
-		int numeroTavolo = Integer.parseInt(request.getParameter("tavolo"));
-		Tavolo tavolo = new Tavolo();		
-		tavolo.setNumero(numeroTavolo);
-		
-		String nomeOrdine = request.getParameter("nome");
-		//Ordine ordine = createNewOrdine();
-		//ordine.setNome(nomeOrdine);
-		//ordine.setTavolo(tavolo);
+//		int numeroTavolo = Integer.parseInt(request.getParameter("tavolo"));
+//		Tavolo tavolo = new Tavolo();		
+//		tavolo.setNumero(numeroTavolo);
+//		
+//		String nomeOrdine = request.getParameter("nome");
+//		Ordine ordine = createNewOrdine();
+//		ordine.setNome(nomeOrdine);
+//		ordine.setTavolo(tavolo);
 	}
 	
 }
